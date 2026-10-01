@@ -1,0 +1,44 @@
+ {% extends 'base.html' %}
+ 
+ {% block content %}
+
+ <div class="grid-head">
+    <div>Тип аудитории</div>
+    <div>Дата</div>
+    <div>Вид оплаты</div>
+    <div>Статус</div>
+    <div>Телефон</div>
+    <div>Комментарий</div>
+
+ </div>
+
+ {%for zayavka in zayavki%}
+
+<div class="grid-list">
+    <div>{{zayavka.type}}</div>
+    <div>{{zayavka.date}}</div>
+    <div>{{zayavka.payment}}</div>
+    <div>{{zayavka.status}}</div>
+    <div>{{user.phone}}</div>
+
+    {% if zayavka.status == 'Услуга оказана' and not zayavka.review %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input value=""{{zayavka.id}} name="zayavka_id" type="text" hidden>
+        <textarea name="review" placeholder="текст отзыва"></textarea>
+
+        <button>Создать</button>
+    </form>
+
+    {% endif %}
+
+    {% if zayavka.review %}
+        {{ zayavka.review.text }}
+    {% endif%}
+
+</div>
+
+{% endfor %}
+
+{% endblock content %}
